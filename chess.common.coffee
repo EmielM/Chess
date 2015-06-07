@@ -160,7 +160,8 @@ findMoves = (board, base) ->
 			# check castling
 			for side,x of {k:1, q:-1}
 				if Db.shared?.peek('castling', color+side) and findMove(x,0,null)
-					# todo: check for check
+					continue if side is 'q' and !findMove(-3,0,null)
+					break if isCheck(board, color) # never allowed to castle when in-check, early exit
 					findMove(x+x, 0, true, 'castle')
 
 	else if piece is 'r'
